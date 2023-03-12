@@ -1,4 +1,4 @@
-const { Schema, Types, default: mongoose } = require('mongoose');
+const { Schema, model, Types, default: mongoose } = require('mongoose');
 const validateEmail = require('../utils/validateEmail')
 
 const userSchema = new Schema(
@@ -29,7 +29,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.virtual;('friendCount').get(function () {
+userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 })
 
