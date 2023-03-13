@@ -12,8 +12,9 @@ module.exports ={
         return res.status(500).json(err);
       });
   },
+
   // Get a single user
-  getUserByID(req, res) {
+  getSingleUser(req, res) {
     User.findOne({ _id: req.params.id })
       .select('-__v')
       .then(async (user) =>
@@ -33,15 +34,17 @@ module.exports ={
   },
   // Update a user
   updateUser(req, res) {
-    User.findOneAndUpdate({_id: req.params.id})
-    .then((user) => 
-    !user
-          ? res.status(404).json({ message: 'No such user exists' })
-          : res.json({user}))
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: 'No user with this id!' })
+          : res.json(user)
+      )
+      .catch((err) => res.status(500).json(err));
   },
   // Delete a student and remove them from the course
   deleteUser(req, res) {
