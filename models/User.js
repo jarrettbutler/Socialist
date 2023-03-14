@@ -18,8 +18,14 @@ const userSchema = new Schema(
       validate: [validateEmail, "Please use valid email"],
       match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please use valid email"]
     },
-    thoughts: [mongoose.SchemaTypes.ObjectId],
-    friends: [mongoose.SchemaTypes.ObjectId]
+    thoughts: [{
+      type: Types.ObjectId,
+      ref: 'Thought', // related model is 'Thought'
+    },],
+    friends: [{
+      type: Types.ObjectId,
+      ref: 'User',
+    },]
   },
   {
     toJSON: {
@@ -33,6 +39,6 @@ userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 })
 
-const User = model('user', userSchema)
+const User = model('User', userSchema)
 
 module.exports = User;
