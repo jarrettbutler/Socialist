@@ -21,15 +21,15 @@ module.exports = {
   },
 
   // Create a thought
-  createThought({params, body}, res) {
+  createThought({ params, body }, res) {
     Thought.create(body)
-    .then(({_id}) => {
-      return User.findByOneAndUpdate(
-        { _id: params.userId },
-      { $push: {thoughts: _id} },
-      { runValidators: true, new: true }
-      )
-    })
+      .then(({ _id }) => {
+        return User.findByOneAndUpdate(
+          { _id: params.userId },
+          { $push: { thoughts: _id } },
+          { runValidators: true, new: true }
+        )
+      })
       .then((thought) => res.json(thought))
       .catch((err) => {
         console.log(err);
